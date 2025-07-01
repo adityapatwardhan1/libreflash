@@ -122,3 +122,132 @@ h1, h2 {
 .card:hover {
   box-shadow: 0 8px 16px rgba(0,0,0,0.2);
 }
+
+/* src/components/Form.css */
+.form-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.form-header {
+  text-align: center;
+  padding: 2.5rem 1rem;
+}
+
+.form-header h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.form-header p {
+  font-size: 1.125rem;
+  color: #4b5563;
+  margin-top: 0.5rem;
+}
+
+.form-main {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  padding-top: 10vh;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: 72rem; /* increased from 42rem */
+  padding: 0 2rem;   /* increased side padding */
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1.375rem; /* slightly larger */
+  max-width: 42rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 1.25rem; /* slightly more padding */
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 1.125rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.form-group textarea {
+  height: 12rem; /* slightly taller */
+}
+
+.form-checkbox {
+  display: flex;
+  align-items: center;        /* aligns checkbox with first line of text */
+  gap: 0.75rem;
+  font-size: 1.05rem;
+  flex-wrap: nowrap;          /* prevent wrapping */
+  line-height: 1.5;
+  max-width: 100%;
+}
+
+.form-checkbox span {
+  white-space: nowrap;
+}
+
+.form-group button {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 1.25rem;
+  font-size: 1.25rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.form-group button:hover {
+  background-color: #1d4ed8;
+}
+
+.form-group button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.form-footer {
+  height: 40vh;
+}
+
+/* App.css (or common.css) */
+
+.button {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.125rem;
+  background-color: #2563eb; /* blue-600 */
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button:hover {
+  background-color: #1d4ed8; /* blue-700 */
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+

@@ -1,7 +1,7 @@
 // src/components/Form.tsx
 import { useState } from "react"
 import { generateFlashcards } from "../api/libreflash"
-import "./Form.css"
+import "../App.css"
 
 interface Props {
   onSubmitSuccess: (cards: any) => void
