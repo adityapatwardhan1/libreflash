@@ -1,0 +1,5 @@
+backend/.env
+backend/app/__pycache__
+backend/venv
+
+frontend/libreflash-frontend/src/assets

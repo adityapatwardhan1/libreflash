@@ -1,0 +1,124 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+body {
+  background-color: #f9fafb;
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #111;
+  background-color: #f9fafb;
+
+  /* Center horizontally only */
+  display: flex;
+  justify-content: center;
+  /* Remove align-items so content flows vertically naturally */
+  min-height: 100vh; /* full viewport height */
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+main {
+  max-width: 672px;
+  width: 100%;
+}
+
+/* Flashcard deck container */
+.flashcard-deck {
+  display: flex;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 1rem;
+
+  justify-content: center; /* center cards horizontally */
+  gap: 1rem; /* spacing between cards */
+}
+
+/* Each card */
+.card {
+  background-color: white;
+  color: black;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 320px;
+  height: 200px;
+  padding: 1.5rem;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  scroll-snap-align: start;
+  transition: box-shadow 0.3s ease;
+  flex-shrink: 0; /* don't shrink */
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.flashcard-deck::-webkit-scrollbar {
+  height: 8px;
+}
+
+.flashcard-deck::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 4px;
+}
+
+.flashcard-deck::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+/* Wrapper centers the scroll container horizontally */
+.deck-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+/* Your existing flashcard deck styling */
+.flashcard-deck {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 1rem;
+  /* remove justify-content here to avoid conflicts */
+}
+
+/* Card styling as before */
+.card {
+  background-color: white;
+  color: black;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 320px;
+  height: 200px;
+  padding: 1.5rem;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  scroll-snap-align: start;
+  transition: box-shadow 0.3s ease;
+  flex-shrink: 0;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
