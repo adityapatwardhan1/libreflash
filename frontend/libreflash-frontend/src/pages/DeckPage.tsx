@@ -44,7 +44,7 @@ export default function DeckPage() {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = "flashcards.apkg";
+            a.download = `${data.deck_name.replace(/\s+/g, "_")}.apkg`
             a.click();
             window.URL.revokeObjectURL(url);
           } else {
@@ -52,7 +52,7 @@ export default function DeckPage() {
             alert("Failed to export Anki deck.");
           }
         }}
-        className="export-button"
+        className="button"
       >
         Export to Anki
       </button>

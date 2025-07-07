@@ -297,3 +297,9 @@ h1, h2 {
   font-weight: 500;
   color: #4b5563;
 }
+
+.cloze-blank {
+  border-bottom: 2px dashed #999;
+  color: #999;
+  padding: 0 4px;
+}
