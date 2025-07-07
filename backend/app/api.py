@@ -1,13 +1,13 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
-from models import FlashcardRequest, FlashcardResponse
+from tempfile import NamedTemporaryFile
+from models import FlashcardRequest, FlashcardResponse, FlashcardExportRequest
 from libretexts import fetch_clean_text
 from flashcard_gen import generate_flashcards
 from note_checker import check_notes_consistency
 import logging
 from db import add_flashcard_deck 
 import genanki
-
 
 router = APIRouter()
 logger = logging.getLogger("uvicorn.error")  # Use Uvicorn's logger
@@ -25,19 +25,18 @@ async def generate(request: FlashcardRequest):
         
         flashcards = generate_flashcards(page_text, request.notes)
         
-        add_flashcard_deck(
-            deck_name=flashcards["deck_name"],
-            cards=flashcards["cards"],
-            link=request.link,
-            notes=request.notes
-        )
+        # add_flashcard_deck(
+        #     deck_name=flashcards["deck_name"],
+        #     cards=flashcards["cards"],
+        #     link=request.link,
+        #     notes=request.notes
+        # )
 
         return flashcards
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-import genanki
 
 def download_to_anki_apkg(deck_name: str, cards: list[dict], output_path: str):
     model_id = 1392738432
@@ -70,20 +69,15 @@ def download_to_anki_apkg(deck_name: str, cards: list[dict], output_path: str):
 
     genanki.Package(deck).write_to_file(output_path)
 
-
-@router.post("/download-anki/")
-def download_anki_flashcards(request: FlashcardRequest):
+@router.post("/export-anki/")
+def export_anki(data: FlashcardExportRequest):
     try:
-        page_text = fetch_clean_text(request.link)
-        flashcards_data = generate_flashcards(page_text, request.notes)
+        with NamedTemporaryFile(delete=False, suffix=".apkg") as tmpfile:
+            download_to_anki_apkg(data.deck_name, data.cards, tmpfile.name)
+            return FileResponse(
+                tmpfile.name,
+                filename=f"{data.deck_name.replace(' ', '_')}.apkg",
+                media_type="application/octet-stream"
+            )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to generate flashcards: {e}")
-
-    output_path = "/tmp/flashcards.apkg"
-    download_to_anki_apkg(flashcards_data["deck_name"], flashcards_data["cards"], output_path)
-
-    return FileResponse(
-        output_path,
-        filename=f'{flashcards_data["deck_name"].replace(" ", "_")}.apkg',
-        media_type='application/vnd.apkg',
-    )
+        raise HTTPException(status_code=500, detail=str(e))

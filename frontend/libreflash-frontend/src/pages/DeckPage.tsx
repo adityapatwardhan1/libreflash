@@ -29,6 +29,35 @@ export default function DeckPage() {
         ← Back
       </button>
 
+      <button
+        onClick={async () => {
+          const res = await fetch("http://localhost:8000/export-anki/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              deck_name: data.deck_name,
+              cards: data.cards,
+            }),
+          });
+          if (res.ok) {
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "flashcards.apkg";
+            a.click();
+            window.URL.revokeObjectURL(url);
+          } else {
+            console.error("Failed to export deck:", await res.text());
+            alert("Failed to export Anki deck.");
+          }
+        }}
+        className="export-button"
+      >
+        Export to Anki
+      </button>
+
+
     </main>
   );
 }
