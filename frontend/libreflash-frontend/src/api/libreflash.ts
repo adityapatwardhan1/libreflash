@@ -18,6 +18,8 @@ export async function generateFlashcards(data: {
 }
 
 export interface FlashcardResponse {
+  deck_id: string;
   deck_name: string;
   cards: { question: string; answer: string }[];
 }
+

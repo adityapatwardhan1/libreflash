@@ -1,37 +1,44 @@
-// src/components/Form.tsx
-import { useState } from "react"
-import { generateFlashcards } from "../api/libreflash"
-import "../App.css"
+import { useState } from "react";
+import { generateFlashcards } from "../api/libreflash";
+import "../App.css";
 
 interface Props {
-  onSubmitSuccess: (cards: any) => void
-  onError: (msg: string) => void
+  onError: (msg: string) => void;
+  onSubmitSuccess: (data: any) => void;
 }
 
 export default function Form({ onSubmitSuccess, onError }: Props) {
-  const [link, setLink] = useState("")
-  const [notes, setNotes] = useState("")
-  const [confirmed, setConfirmed] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [link, setLink] = useState("");
+  const [notes, setNotes] = useState("");
+  const [confirmed, setConfirmed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [searchId, setSearchId] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (!confirmed) return onError("You must confirm your notes are not proprietary.")
+    e.preventDefault();
+    if (!confirmed) return onError("You must confirm your notes are not proprietary.");
     try {
-      setLoading(true)
-      const response = await generateFlashcards({ link, notes })
-      onSubmitSuccess(response)
+      setLoading(true);
+      const response = await generateFlashcards({ link, notes });
+	  console.log("Flashcard API response:", response);
+	  onSubmitSuccess({ ...response, link, notes }); 
     } catch (err: any) {
-      onError(err.message)
+      onError(err.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   return (
     <div className="form-container">
+      {/* <header className="form-header">
+        <h1 className="form-title">LibreFlash</h1>
+        <p className="form-subtitle">Generate flashcards from open textbooks and your notes</p>
+      </header> */}
+
       <main className="form-main">
         <form onSubmit={handleSubmit} className="form-content">
+          {/* Link Input */}
           <div className="form-group">
             <label>Textbook Link</label>
             <input
@@ -43,6 +50,7 @@ export default function Form({ onSubmitSuccess, onError }: Props) {
             />
           </div>
 
+          {/* Notes Input */}
           <div className="form-group">
             <label>Your Notes (Optional)</label>
             <textarea
@@ -52,24 +60,46 @@ export default function Form({ onSubmitSuccess, onError }: Props) {
             />
           </div>
 
+          {/* Non-proprietary Confirmation */}
           <div className="form-group">
-            <div className="form-checkbox">
+            <div className="form-checkbox" style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1rem" }}>
               <input
                 type="checkbox"
                 checked={confirmed}
                 onChange={(e) => setConfirmed(e.target.checked)}
+                id="confirm-checkbox"
               />
-              <span>I confirm my notes are not proprietary</span>
+              <label htmlFor="confirm-checkbox">I confirm my notes are not proprietary</label>
             </div>
 
-            <button type="submit" disabled={loading}>
+            <button type="submit" disabled={loading || !confirmed}>
               {loading ? "Generating…" : "Generate Flashcards"}
             </button>
+          </div>
+        </form>
+
+        {/* Deck Search */}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (searchId.trim()) window.location.href = `/deck/${searchId.trim()}`;
+          }}
+          className="form-content deck-search-form"
+        >
+          <div className="form-group">
+            <label>🔍 Load a Saved Deck</label>
+            <input
+              type="text"
+              placeholder="Enter Deck ID"
+              value={searchId}
+              onChange={(e) => setSearchId(e.target.value)}
+            />
+            <button type="submit">Load Deck</button>
           </div>
         </form>
       </main>
 
       <footer className="form-footer" />
     </div>
-  )
+  );
 }

@@ -1,42 +1,46 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Path
 from fastapi.responses import FileResponse
 from tempfile import NamedTemporaryFile
 from models import FlashcardRequest, FlashcardResponse, FlashcardExportRequest
 from libretexts import fetch_clean_text
 from flashcard_gen import generate_flashcards
 from note_checker import check_notes_consistency
-import logging
-from db import add_flashcard_deck 
+from db import add_flashcard_deck, get_deck_by_id #, get_flashcard_deck_by_id 
 import genanki
+import logging
 
 router = APIRouter()
-logger = logging.getLogger("uvicorn.error")  # Use Uvicorn's logger
+logger = logging.getLogger("uvicorn.error")
 
 @router.post("/generate-flashcards", response_model=FlashcardResponse)
 async def generate(request: FlashcardRequest):
     try:
         page_text = fetch_clean_text(request.link)
-        
-        # Check notes consistency first
+
         if request.notes.strip():
             consistent = check_notes_consistency(page_text, request.notes)
             if not consistent:
                 raise HTTPException(status_code=400, detail="Your notes do not appear consistent with the textbook content.")
-        
-        flashcards = generate_flashcards(page_text, request.notes)
-        
-        # add_flashcard_deck(
-        #     deck_name=flashcards["deck_name"],
-        #     cards=flashcards["cards"],
-        #     link=request.link,
-        #     notes=request.notes
-        # )
 
-        return flashcards
+        flashcards = generate_flashcards(page_text, request.notes)
+
+        # Save to MongoDB and capture the ID
+        deck_id = add_flashcard_deck(
+            deck_name=flashcards["deck_name"],
+            cards=flashcards["cards"],
+            link=request.link,
+            notes=request.notes
+        )
+        print("deck_id:", deck_id)
+        return {
+            "deck_id": str(deck_id),
+            "deck_name": flashcards["deck_name"],
+            "cards": flashcards["cards"],
+        }
+
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 def download_to_anki_apkg(deck_name: str, cards: list[dict], output_path: str):
     model_id = 1392738432
@@ -79,5 +83,40 @@ def export_anki(data: FlashcardExportRequest):
                 filename=f"{data.deck_name.replace(' ', '_')}.apkg",
                 media_type="application/octet-stream"
             )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# @router.get("/deck/{deck_id}", response_model=FlashcardResponse)
+# async def get_deck(deck_id: str):
+#     print("in get_deck, deck_id =", deck_id)
+#     try:
+#         deck = get_flashcard_deck_by_id(deck_id)
+#         if not deck:
+#             raise HTTPException(status_code=404, detail="Deck not found")
+
+#         return {
+#             "deck_name": deck["deck_name"],
+#             "cards": deck["cards"],
+#             "deck_id": deck_id
+#         }
+#     except InvalidId:
+#         raise HTTPException(status_code=400, detail="Invalid deck ID")
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
+
+
+
+
+@router.get("/decks/{deck_id}")
+def get_deck(deck_id: str):
+    try:
+        deck = get_deck_by_id(deck_id)
+        if not deck:
+            raise HTTPException(status_code=404, detail="Deck not found")
+
+        # Convert ObjectId to string
+        deck["_id"] = str(deck["_id"])
+        return deck
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

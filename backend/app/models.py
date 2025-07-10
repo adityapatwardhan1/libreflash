@@ -8,7 +8,9 @@ class FlashcardRequest(BaseModel):
 class FlashcardResponse(BaseModel):
     deck_name: str
     cards: list[dict]  # or a proper Card model
+    deck_id: str
 
 class FlashcardExportRequest(BaseModel):
     deck_name: str
     cards: List[Dict[str, str]]
+    # deck_id: str
