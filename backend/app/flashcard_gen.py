@@ -61,8 +61,6 @@ def generate_flashcards(text: str, notes: str = "", model: str = "deepseek/deeps
     cleaned = strip_markdown_fences(content)
     cleaned = fix_single_cloze_braces(cleaned)
 
-    # print("cleaned =", cleaned)
-
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError as e:

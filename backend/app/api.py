@@ -31,7 +31,6 @@ async def generate(request: FlashcardRequest):
             link=request.link,
             notes=request.notes
         )
-        print("deck_id:", deck_id)
         return {
             "deck_id": str(deck_id),
             "deck_name": flashcards["deck_name"],
@@ -85,26 +84,6 @@ def export_anki(data: FlashcardExportRequest):
             )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-# @router.get("/deck/{deck_id}", response_model=FlashcardResponse)
-# async def get_deck(deck_id: str):
-#     print("in get_deck, deck_id =", deck_id)
-#     try:
-#         deck = get_flashcard_deck_by_id(deck_id)
-#         if not deck:
-#             raise HTTPException(status_code=404, detail="Deck not found")
-
-#         return {
-#             "deck_name": deck["deck_name"],
-#             "cards": deck["cards"],
-#             "deck_id": deck_id
-#         }
-#     except InvalidId:
-#         raise HTTPException(status_code=400, detail="Invalid deck ID")
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
-
-
 
 
 @router.get("/decks/{deck_id}")
