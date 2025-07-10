@@ -20,7 +20,6 @@ export default function Form({ onSubmitSuccess, onError }: Props) {
 		try {
 		setLoading(true);
 		const response = await generateFlashcards({ link, notes });
-		console.log("Flashcard API response:", response);
 		onSubmitSuccess({ ...response, link, notes }); 
 		} catch (err: any) {
 		onError(err.message);

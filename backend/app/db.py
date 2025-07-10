@@ -17,13 +17,5 @@ def add_flashcard_deck(deck_name: str, cards: list, link: str, notes: str):
     })
     return result.inserted_id
 
-# def get_flashcard_deck_by_id(deck_id: str):
-#     from bson.objectid import ObjectId
-#     deck = db.decks.find_one({"_id": ObjectId(deck_id)})
-#     if deck:
-#         deck["_id"] = str(deck["_id"])  # convert ObjectId to string for JSON serialization
-#     return deck
-
-
 def get_deck_by_id(deck_id: str):
     return db.decks.find_one({"_id": ObjectId(deck_id)})

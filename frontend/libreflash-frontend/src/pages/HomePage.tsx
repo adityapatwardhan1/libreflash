@@ -13,8 +13,8 @@ export default function HomePage() {
 				onSubmitSuccess={(data) => {
 				navigate("/deck", {
 					state: {
-					...data, // includes deck_id, deck_name, cards
-					link: data.link ?? "",  // explicitly include these if your backend doesn’t return them
+					...data,
+					link: data.link ?? "",
 					notes: data.notes ?? ""
 					}
 				});
