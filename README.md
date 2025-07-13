@@ -49,7 +49,7 @@ uvicorn main:app --reload --port 8000
 4. **Run the frontend:**
 
 ```
-cd frontend
+cd frontend/libreflash-frontend
 npm install
 npm run dev
 ```

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Path
+from fastapi import APIRouter, HTTPException, Path, Depends, HTTPException
 from fastapi.responses import FileResponse
 from tempfile import NamedTemporaryFile
 from models import FlashcardRequest, FlashcardResponse, FlashcardExportRequest
@@ -8,12 +8,13 @@ from note_checker import check_notes_consistency
 from db import add_flashcard_deck, get_deck_by_id #, get_flashcard_deck_by_id 
 import genanki
 import logging
+from auth_routes import get_current_user
 
 router = APIRouter()
 logger = logging.getLogger("uvicorn.error")
 
 @router.post("/generate-flashcards", response_model=FlashcardResponse)
-async def generate(request: FlashcardRequest):
+async def generate(request: FlashcardRequest, current_user=Depends(get_current_user)):
     try:
         page_text = fetch_clean_text(request.link)
 
@@ -29,7 +30,8 @@ async def generate(request: FlashcardRequest):
             deck_name=flashcards["deck_name"],
             cards=flashcards["cards"],
             link=request.link,
-            notes=request.notes
+            notes=request.notes,
+            owner_id=current_user["user_id"],
         )
         return {
             "deck_id": str(deck_id),

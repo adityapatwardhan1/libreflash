@@ -38,13 +38,16 @@ Guidelines:
 {notes}
 """
 
+
 def strip_markdown_fences(text: str) -> str:
     # Remove ```json or ``` from beginning and end if present
     return re.sub(r"^```(?:json)?\s*|\s*```$", "", text.strip(), flags=re.MULTILINE)
 
+
 def fix_single_cloze_braces(text: str) -> str:
     # Replace {c1::...} with {{c1::...}} if only single-braced
     return re.sub(r'(?<!{)\{(c\d+::.*?)}(?!})', r'{{\1}}', text)
+
 
 def generate_flashcards(text: str, notes: str = "", model: str = "deepseek/deepseek-chat-v3-0324:free"):
     if not notes.strip():
