@@ -54,12 +54,10 @@ def generate_flashcards(text: str, notes: str = "", model: str = "deepseek/deeps
         notes = "None provided"
 
     prompt = FLASHCARD_PROMPT.format(text=text, notes=notes)
-
     resp = client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": prompt}],
     )
-
     content = resp.choices[0].message.content.strip()
     cleaned = strip_markdown_fences(content)
     cleaned = fix_single_cloze_braces(cleaned)

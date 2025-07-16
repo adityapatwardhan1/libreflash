@@ -5,10 +5,12 @@ from models import FlashcardRequest, FlashcardResponse, FlashcardExportRequest
 from libretexts import fetch_clean_text
 from flashcard_gen import generate_flashcards
 from note_checker import check_notes_consistency
-from db import add_flashcard_deck, get_deck_by_id #, get_flashcard_deck_by_id 
+from db import add_flashcard_deck, get_deck_by_id, get_decks_by_owner_id #, get_flashcard_deck_by_id 
 import genanki
 import logging
 from auth_routes import get_current_user
+from authorize import get_optional_user
+from typing import Optional
 
 router = APIRouter()
 logger = logging.getLogger("uvicorn.error")
@@ -86,18 +88,31 @@ def export_anki(data: FlashcardExportRequest):
             )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
 
 
 @router.get("/decks/{deck_id}")
-def get_deck(deck_id: str):
-    try:
-        deck = get_deck_by_id(deck_id)
-        if not deck:
-            raise HTTPException(status_code=404, detail="Deck not found")
+def get_deck(deck_id: str, current_user: Optional[dict] = Depends(get_optional_user)):
+    deck = get_deck_by_id(deck_id)
+    if not deck:
+        raise HTTPException(status_code=404, detail="Deck not found")
+    is_owner = current_user and str(deck.get("owner_id")) == (current_user.get("user_id") or current_user.get("sub"))
+    is_public = deck.get("is_public", False)
 
-        # Convert ObjectId to string
-        deck["_id"] = str(deck["_id"])
-        return deck
+    if not is_public and not is_owner:
+        raise HTTPException(status_code=403, detail="Not authorized")
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    deck["_id"] = str(deck["_id"])
+    if deck.get("owner_id"):
+        deck["owner_id"] = str(deck["owner_id"])
+
+    return deck
+
+
+
+@router.get("/my-decks")
+def get_user_decks(current_user=Depends(get_current_user)):
+    user_id = current_user["user_id"]
+    decks = get_decks_by_owner_id(user_id)
+    decks = [{ **deck, "_id": str(deck["_id"]) } for deck in decks]
+    return decks
