@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import MyDecksPage from "./pages/MyDecksPage";
 import PrivateRoute from "./components/PrivateRoute";
+import Layout from "./components/Layout";
 
 import './App.css';
 
@@ -17,6 +18,14 @@ export default function App() {
         <Route path="/register" element={<RegisterPage />} />
 
         {/* Protected Routes */}
+        {/* Protected Layout Route */}
+        <Route
+          element={
+            <PrivateRoute>
+              <Layout />
+            </PrivateRoute>
+          }
+        ></Route>
         <Route
           path="/"
           element={

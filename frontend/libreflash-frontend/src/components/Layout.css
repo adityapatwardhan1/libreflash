@@ -1,0 +1,18 @@
+/* src/components/Layout.css */
+.navbar {
+  background-color: #1e1e2f;
+  padding: 1rem 2rem;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+main {
+  padding: 2rem;
+}
