@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { generateFlashcards } from "../api/libreflash";
 import "../App.css";
 
@@ -13,6 +14,7 @@ export default function Form({ onSubmitSuccess, onError }: Props) {
 	const [confirmed, setConfirmed] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [searchId, setSearchId] = useState("");
+	const navigate = useNavigate();
 
 	async function handleSubmit(e: React.FormEvent) {
 		e.preventDefault();
@@ -71,6 +73,24 @@ export default function Form({ onSubmitSuccess, onError }: Props) {
 						</div>
 					</form>
 
+					<form className="form-box">
+						<div style={{ textAlign: "center" }}>
+							<button
+								onClick={() => navigate("/my-decks")}
+								style={{
+									padding: "0.5rem 0.5rem",
+									fontSize: "1rem",
+									border: "1px solid #ccc",
+									borderRadius: "4px",
+									backgroundColor: "#f0f0f0",
+									cursor: "pointer",
+								}}
+							>
+								📚 View My Decks
+							</button>
+						</div>
+					</form>
+
 					<form
 					onSubmit={(e) => {
 						e.preventDefault();
@@ -89,7 +109,12 @@ export default function Form({ onSubmitSuccess, onError }: Props) {
 							<button type="submit" disabled={!searchId.trim()}>Load Deck</button>
 						</div>
 					</form>
+
+					
+
 				</div>
+
+				
 			</main>
 			<footer className="form-footer" />
 		</div>
