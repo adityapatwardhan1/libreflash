@@ -49,6 +49,7 @@ export default function App() {
             </PrivateRoute>
           }
         />
+        <Route path="*" element={<div>404 - Not Found</div>} />
       </Routes>
   );
 }

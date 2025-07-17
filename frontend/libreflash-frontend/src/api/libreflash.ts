@@ -1,45 +1,3 @@
-/// libreflash-frontend/src/
-
-// src/api/libreflash.ts
-
-// export async function generateFlashcards(data: {
-//   link: string;
-//   notes: string;
-// }, token: string): Promise<FlashcardResponse> {
-//   const res = await fetch("http://localhost:8000/generate-flashcards/", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "Authorization": `Bearer ${token}`
-//     },
-//     body: JSON.stringify({ ...data, user_confirmed: true })
-//   });
-//   if (!res.ok) throw new Error(await res.text());
-//   return await res.json();
-// }
-
-// export async function generateFlashcards(data: {
-//   link: string;
-//   notes: string;
-// }): Promise<FlashcardResponse> {
-//   const token = localStorage.getItem("token");
-
-//   const res = await fetch("http://localhost:8000/generate-flashcards/", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       ...(token && { Authorization: `Bearer ${token}` }),
-//     },
-//     body: JSON.stringify({ ...data, user_confirmed: true }),
-//   });
-
-//   if (!res.ok) {
-//     const error = await res.text();
-//     throw new Error(error);
-//   }
-//   return await res.json();
-// }
-
 export async function generateFlashcards(data: { link: string; notes: string }) {
   const token = localStorage.getItem("token");
   const res = await fetch("http://localhost:8000/generate-flashcards/", {
@@ -64,22 +22,6 @@ export interface FlashcardResponse {
   deck_name: string;
   cards: { question: string; answer: string }[];
 }
-
-// export async function generateFlashcards(data: {
-//   link: string;
-//   notes: string;
-// }): Promise<FlashcardResponse> {
-//   const res = await fetch("http://localhost:8000/generate-flashcards/", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({ ...data, user_confirmed: true })
-//   });
-//   if (!res.ok) {
-//     const error = await res.text();
-//     throw new Error(error);
-//   }
-//   return await res.json();
-// }
 
 
 

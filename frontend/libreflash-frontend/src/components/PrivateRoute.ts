@@ -1,15 +1,22 @@
-import type { ReactNode } from "react";
 import * as React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { isLoggedIn } from "../utils/auth";
 
-interface Props {
-  children: ReactNode;
-}
+type PrivateRouteProps = {
+  children: React.ReactElement;
+};
 
-export default function PrivateRoute({ children }: Props): React.ReactElement {
+export default function PrivateRoute({ children }: PrivateRouteProps) {
+  const location = useLocation();
+  console.log("Logged in?", isLoggedIn());
+
   if (!isLoggedIn()) {
-    return React.createElement(Navigate, { to: "/login", replace: true });
+    return React.createElement(Navigate, {
+      to: "/login",
+      replace: true,
+      state: { from: location.pathname },
+    });
   }
-  return React.createElement(React.Fragment, null, children);
+
+  return children;
 }

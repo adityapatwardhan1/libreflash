@@ -1,3 +1,9 @@
 export function isLoggedIn(): boolean {
-  return !!localStorage.getItem("token");
+  const token = localStorage.getItem("token");
+  return !!token && token !== "null" && token !== "undefined";
 }
+
+export function logout() {
+  localStorage.removeItem("token");
+}
+
