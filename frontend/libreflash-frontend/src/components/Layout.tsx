@@ -11,7 +11,9 @@ export default function Layout() {
           <Link to="/" className="logo">LibreFlash</Link>
           <Link to="/my-decks" className="nav-link">My Decks</Link>
         </div>
-        <LogoutButton />
+        <div className="nav-right">
+          <LogoutButton />
+        </div>
       </nav>
       <main>
         <Outlet />
