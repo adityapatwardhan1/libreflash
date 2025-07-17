@@ -29,23 +29,6 @@ export default function DeckIdPage() {
     fetchDeck();
   }, [deckId]);
 
-  // useEffect(() => {
-  //   async function fetchDeck() {
-  //     try {
-  //       console.log("in fetchDeck")
-  //       const res = await fetch(`http://localhost:8000/decks/${deckId}`);
-  //       if (!res.ok) throw new Error("Deck not found");
-  //       const data = await res.json();
-  //       console.log("data="+data);
-  //       setDeck(data);
-  //     } catch (err: any) {
-  //       setError(err.message);
-  //     }
-  //   }
-
-  //   fetchDeck();
-  // }, [deckId]);
-
   if (error) return <p style={{ color: "red" }}>{error}</p>;
   if (!deck) return <p>Loading…</p>;
 

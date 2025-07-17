@@ -1,50 +1,73 @@
+// src/pages/RegisterPage.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function RegisterPage() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const [error, setError] = useState("");
+	const navigate = useNavigate();
 
-  async function handleRegister(e: React.FormEvent) {
-    e.preventDefault();
-    try {
-      const res = await fetch("http://localhost:8000/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+	async function handleRegister(e: React.FormEvent) {
+		e.preventDefault();
+		try {
+			const res = await fetch("http://localhost:8000/auth/register", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ username, password }),
+			});
 
+			if (!res.ok) {
+				const text = await res.text();
+				throw new Error(text);
+			}
 
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text);
-      }
+			alert("Registration successful! Please login.");
+			navigate("/login");
+		} catch (err: any) {
+			setError(err.message);
+		}
+	}
 
-      alert("Registration successful! Please login.");
-      navigate("/login");
-    } catch (err: any) {
-        console.log("err.message = "+err.message);
-        setError(err.message);
-    }
-  }
+	return (
+		<div>
+			<main className="form-main">
+				<form onSubmit={handleRegister} className="form-box">
+					<h2 style={{ marginBottom: "1rem" }}>Register</h2>
 
-  return (
-    <main className="form-container">
-      <h1>Register</h1>
-      <form onSubmit={handleRegister} className="form-content">
-        <div className="form-group">
-          <label>Username</label>
-          <input value={username} onChange={e => setUsername(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label>Password</label>
-          <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
-        </div>
-        <button type="submit" className="button">Register</button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-      </form>
-    </main>
-  );
+					<div className="form-group">
+						<label>Username</label>
+						<input
+							value={username}
+							onChange={(e) => setUsername(e.target.value)}
+							required
+							placeholder="Enter username"
+						/>
+					</div>
+
+					<div className="form-group">
+						<label>Password</label>
+						<input
+							type="password"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							required
+							placeholder="Enter password"
+						/>
+					</div>
+
+					<button className="button" type="submit">Register</button>
+
+					{error && <p style={{ color: "red" }}>{error}</p>}
+
+					<p style={{ marginTop: "1rem" }}>
+						Already have an account?{" "}
+						<button type="button" onClick={() => navigate("/login")} className="button">
+							Login
+						</button>
+					</p>
+				</form>
+			</main>
+		</div>
+	);
 }
