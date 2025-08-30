@@ -5,7 +5,7 @@ from models import FlashcardRequest, FlashcardResponse, FlashcardExportRequest
 from libretexts import fetch_clean_text
 from flashcard_gen import generate_flashcards
 from note_checker import check_notes_consistency
-from db import add_flashcard_deck, get_deck_by_id, get_decks_by_owner_id #, get_flashcard_deck_by_id 
+from db import add_flashcard_deck, get_deck_by_id, get_decks_by_owner_id
 import genanki
 import logging
 from auth_routes import get_current_user

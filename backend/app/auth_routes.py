@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends, Request, Response, status, Cookie, Security
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from db import get_user_by_username, create_user
 from authorize import *
 import os

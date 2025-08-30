@@ -1,10 +1,18 @@
+# Imports
 from argon2 import PasswordHasher
-from pymongo.collection import Collection
 from bson.objectid import ObjectId
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends
 from db import users_col
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+import jwt 
+from typing import Optional
+import os
 
+# Global variables
 ph = PasswordHasher()
+SECRET_KEY = os.getenv("SECRET_KEY") or "your-fallback-secret"
+ALGORITHM = "HS256"
+security = HTTPBearer(auto_error=False)
 
 def hash_password(password: str) -> str:
     to_return = ph.hash(password)
@@ -24,17 +32,6 @@ def authenticate_user(username: str, password: str) -> str:
 
 def get_user_by_id(user_id: str):
     return users_col.find_one({"_id": ObjectId(user_id)})
-
-# auth/authorize.py
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-import jwt 
-from fastapi import Depends
-from typing import Optional
-import os
-
-SECRET_KEY = os.getenv("SECRET_KEY") or "your-fallback-secret"
-ALGORITHM = "HS256"
-security = HTTPBearer(auto_error=False)
 
 def get_optional_user(credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)) -> Optional[dict]:
     if credentials is None:

@@ -109,12 +109,7 @@ export default function Form({ onSubmitSuccess, onError }: Props) {
 							<button type="submit" disabled={!searchId.trim()}>Load Deck</button>
 						</div>
 					</form>
-
-					
-
 				</div>
-
-				
 			</main>
 			<footer className="form-footer" />
 		</div>

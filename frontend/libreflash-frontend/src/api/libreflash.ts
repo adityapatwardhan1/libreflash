@@ -16,7 +16,6 @@ export async function generateFlashcards(data: { link: string; notes: string }) 
   return await res.json();
 }
 
-
 export interface FlashcardResponse {
   deck_id: string;
   deck_name: string;
