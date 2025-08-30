@@ -18,7 +18,7 @@ Generate flashcards from open educational content like LibreTexts, optionally us
 - **Frontend:** React (TypeScript), React Router
 - **Backend:** FastAPI
 - **Database:** MongoDB (Atlas)
-- **AI:** LLM-based flashcard generator (via `generate_flashcards`)
+- **AI:** OpenRouter API
 - **Export:** `genanki` for `.apkg` packaging
 
 ## Running Locally
