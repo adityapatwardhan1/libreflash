@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import DeckPage from "./pages/DeckPage";
 import DeckIdPage from "./pages/DeckIdPage";
