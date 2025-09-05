@@ -15,8 +15,7 @@ ALGORITHM = "HS256"
 security = HTTPBearer(auto_error=False)
 
 def hash_password(password: str) -> str:
-    to_return = ph.hash(password)
-    return to_return
+    return ph.hash(password)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     try:

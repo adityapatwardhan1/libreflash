@@ -2,7 +2,8 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 from bson import ObjectId
 import os
-from auth.hashing import hash_password
+from argon2 import PasswordHasher
+
 
 load_dotenv()
 client = MongoClient(os.getenv("MONGODB_URI"))
@@ -10,6 +11,10 @@ print("connecting to mongo client")
 db = client[os.getenv("MONGODB_DB", "libreflash")]
 print("successfully connected to mongo client")
 users_col = db["users"]
+
+ph = PasswordHasher()
+def hash_password(password: str) -> str:
+    return ph.hash(password)
 
 def create_user(username: str, password: str):
     if users_col.find_one({"username": username}):
