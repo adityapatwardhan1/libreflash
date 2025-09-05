@@ -4,7 +4,7 @@ Generate flashcards from open educational content like LibreTexts, optionally us
 
 Live App: [LibreFlash on Vercel](https://libreflash.vercel.app/)
 
-Backend API: Hosted on Render; serving REST endpoints to the frontend
+Backend API: Hosted on Render; serving REST endpoints to the frontend, with **automatic deployment on commit** for seamless updates
 
 ## Features
 
