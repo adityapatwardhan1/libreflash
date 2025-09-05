@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import FlashcardDeck from "../components/FlashcardDeck";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 export default function DeckIdPage() {
 	const { deckId } = useParams();
 	const [deck, setDeck] = useState<any | null>(null);
@@ -14,7 +16,7 @@ export default function DeckIdPage() {
 			try {
 				const token = localStorage.getItem("token");
 				const res = await fetch(
-					`http://localhost:8000/decks/${deckId}`,
+					`${API_URL}/decks/${deckId}`,
 					{
 						headers: {
 							...(token

@@ -1,8 +1,9 @@
-// src/pages/DeckPage.tsx
 import { useLocation, useNavigate } from "react-router-dom";
 import FlashcardDeck from "../components/FlashcardDeck";
 import { useEffect, useState } from "react";
 import "../App.css";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 export default function DeckPage() {
 	const location = useLocation();
@@ -64,7 +65,7 @@ export default function DeckPage() {
 			<button
 				onClick={async () => {
 					const res = await fetch(
-						"http://localhost:8000/export-anki/",
+						`${API_URL}/export-anki/`,
 						{
 							method: "POST",
 							headers: { "Content-Type": "application/json" },

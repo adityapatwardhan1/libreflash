@@ -1,6 +1,8 @@
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 export async function generateFlashcards(data: { link: string; notes: string }) {
   const token = localStorage.getItem("token");
-  const res = await fetch("http://localhost:8000/generate-flashcards/", {
+  const res = await fetch(`${API_URL}/generate-flashcards/`, {
     method: "POST",
     headers: { 
       "Content-Type": "application/json",

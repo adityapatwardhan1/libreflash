@@ -1,12 +1,14 @@
 import { useState } from "react"
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 export default function DownloadButton({ link, notes }: { link: string, notes: string }) {
   const [loading, setLoading] = useState(false)
 
   async function handleDownload() {
     setLoading(true)
     try {
-      const response = await fetch("http://localhost:8000/api/download-anki/", {
+      const response = await fetch(`${API_URL}/api/download-anki/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

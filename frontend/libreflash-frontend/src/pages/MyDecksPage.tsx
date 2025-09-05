@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 interface Deck {
 	_id: string;
 	deck_name: string;
@@ -22,7 +24,7 @@ export default function MyDecksPage() {
 					return;
 				}
 
-				const res = await fetch("http://localhost:8000/my-decks", {
+				const res = await fetch(`${API_URL}/my-decks`, {
 					headers: { Authorization: `Bearer ${token}` },
 				});
 

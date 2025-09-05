@@ -6,7 +6,9 @@ from auth.hashing import hash_password
 
 load_dotenv()
 client = MongoClient(os.getenv("MONGODB_URI"))
+print("connecting to mongo client")
 db = client[os.getenv("MONGODB_DB", "libreflash")]
+print("successfully connected to mongo client")
 users_col = db["users"]
 
 def create_user(username: str, password: str):
@@ -18,6 +20,7 @@ def create_user(username: str, password: str):
     }).inserted_id
 
 def get_user_by_username(username: str):
+    print("in get_user_by_username")
     return users_col.find_one({"username": username})
 
 def add_flashcard_deck(deck_name: str, cards: list, link: str, notes: str, owner_id: ObjectId = None, is_public: bool = False):
