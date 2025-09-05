@@ -1,6 +1,9 @@
 # LibreFlash
 
-Generate flashcards from open educational content like LibreTexts, optionally using your own notes — with AI assistance.
+Generate flashcards from open educational content like LibreTexts, optionally using your own notes, using open-source LLMs.
+
+Live App: [LibreFlash on Vercel](https://libreflash.vercel.app/)
+Backend API: Hosted on Render
 
 ## Features
 
@@ -8,15 +11,15 @@ Generate flashcards from open educational content like LibreTexts, optionally us
 - Generates question-answer flashcards using an LLM
 - Optional: add your own notes for context
 - Verifies notes are aligned with textbook content before processing, reducing chance of proprietary material
-- Saves flashcard decks to MongoDB with unique Deck IDs
+- Saves flashcard decks to MongoDB Atlas with unique Deck IDs
 - Lets you retrieve your previously created decks
 - Exports decks as `.apkg` files for Anki
 - Fully responsive frontend (React + FastAPI backend)
 
 ## Technologies
 
-- **Frontend:** React (TypeScript), React Router
-- **Backend:** FastAPI
+- **Frontend:** React (TypeScript), Vite
+- **Backend:** FastAPI, JWT-based authentication, argon2-cffi for secure password hashing
 - **Database:** MongoDB (Atlas)
 - **AI:** OpenRouter API
 - **Export:** `genanki` for `.apkg` packaging
