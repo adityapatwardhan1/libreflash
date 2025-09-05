@@ -21,11 +21,27 @@ async def generate(request: FlashcardRequest, current_user=Depends(get_current_u
         page_text = fetch_clean_text(request.link)
 
         if request.notes.strip():
-            consistent = check_notes_consistency(page_text, request.notes)
+            try:
+                consistent = generate_flashcards(page_text, request.notes)
+            except Exception as e:
+                if "rate limits" in str(e).lower():
+                    raise HTTPException(
+                        status_code=429,
+                        detail="OpenRouter is currently rate-limited. Please wait a few seconds and try again."
+                    )
+                raise HTTPException(status_code=500, detail=str(e))
             if not consistent:
                 raise HTTPException(status_code=400, detail="Your notes do not appear consistent with the textbook content.")
 
-        flashcards = generate_flashcards(page_text, request.notes)
+        try:
+            flashcards = generate_flashcards(page_text, request.notes)
+        except Exception as e:
+            if "rate limits" in str(e).lower():
+                raise HTTPException(
+                    status_code=429,
+                    detail="OpenRouter is currently rate-limited. Please wait a few seconds and try again."
+                )
+            raise HTTPException(status_code=500, detail=str(e))
 
         # Save to MongoDB and capture the ID
         deck_id = add_flashcard_deck(

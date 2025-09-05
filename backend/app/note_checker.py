@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 import re
 import json
+from llm_utils import call_llm_with_retry
 
 load_dotenv()
 api_key = os.getenv("OPENROUTER_API_KEY")
@@ -32,7 +33,8 @@ def check_resp_true(resp):
 
 def check_notes_consistency(text: str, notes: str, model: str = "deepseek/deepseek-chat-v3-0324:free") -> bool:
     prompt = CHECK_NOTES_PROMPT.format(text=text, notes=notes)
-    resp = client.chat.completions.create(
+    resp = resp = call_llm_with_retry(
+        client.chat.completions.create,
         model=model,
         messages=[{"role": "user", "content": prompt}],
     )

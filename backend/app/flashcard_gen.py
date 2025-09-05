@@ -3,6 +3,7 @@ import json
 import re
 from dotenv import load_dotenv
 from openai import OpenAI
+from llm_utils import call_llm_with_retry
 
 # Load environment variables
 load_dotenv()
@@ -54,7 +55,8 @@ def generate_flashcards(text: str, notes: str = "", model: str = "deepseek/deeps
         notes = "None provided"
 
     prompt = FLASHCARD_PROMPT.format(text=text, notes=notes)
-    resp = client.chat.completions.create(
+    resp = call_llm_with_retry(
+        client.chat.completions.create,
         model=model,
         messages=[{"role": "user", "content": prompt}],
     )
