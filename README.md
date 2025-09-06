@@ -6,6 +6,8 @@ Live App: [LibreFlash on Vercel](https://libreflash.vercel.app/)
 
 Backend API: Hosted on Render; serving REST endpoints to the frontend, with **automatic deployment on commit** for seamless updates
 
+Note: Requests may take long to serve, host locally for fastest speed
+
 ## Features
 
 - Accepts open textbook links (e.g., from LibreTexts)
